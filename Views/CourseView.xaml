@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="X_menu_app.Views.CourseView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             FontFamily="Segoe UI">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Content="Trier" Margin="0,0,5,0" Padding="10,5" Background="White" BorderBrush="#CBD5E1"/>
+                <Button Content="Tout sélectionner" Padding="10,5" Background="White" BorderBrush="#CBD5E1"/>
+            </StackPanel>
+
+            <Border Grid.Column="1" Margin="15,0" Background="White" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="15" Padding="10,5">
+                <DockPanel>
+                    <TextBlock Text="🔍 " VerticalAlignment="Center" Foreground="#94A3B8"/>
+                    <TextBox BorderThickness="0" Background="Transparent" VerticalAlignment="Center" FontSize="14"/>
+                </DockPanel>
+            </Border>
+
+            <StackPanel Grid.Column="2" Orientation="Horizontal">
+                <Button Content="+ Ajouter" Background="#2ECC71" Foreground="White" FontWeight="Bold" Padding="12,6" Margin="0,0,5,0" BorderThickness="0"/>
+                <Button Content="- Supprimer" Background="#E74C3C" Foreground="White" FontWeight="Bold" Padding="12,6" BorderThickness="0"/>
+            </StackPanel>
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Products}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="3"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" BorderBrush="#E2E8F0" BorderThickness="1.5" CornerRadius="12" Margin="6" Padding="10">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Left" VerticalAlignment="Top" Panel.ZIndex="10"/>
+
+                                <Grid Grid.Row="0" Margin="0,5,0,5">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <Border Grid.Column="0" Width="70" Height="70" Background="#F1F5F9" CornerRadius="8">
+                                        <TextBlock Text="📦" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    </Border>
+
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0,0,0">
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="15" TextWrapping="Wrap" Foreground="#1E293B"/>
+                                        <StackPanel Orientation="Horizontal" Margin="0,4,0,0">
+                                            <TextBlock Text="qte : x" Foreground="#64748B" FontSize="12"/>
+                                            <TextBlock Text="{Binding Quantity}" Foreground="#64748B" FontSize="12"/>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Grid>
+
+                                <Border Grid.Row="1" Background="#F8FAFC" CornerRadius="6" Padding="8,5" Margin="0,5,0,0">
+                                    <DockPanel HorizontalAlignment="Stretch">
+                                        <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                                            <TextBlock Text="prix : " FontWeight="Bold" FontSize="12"/>
+                                            <TextBlock Text="{Binding Price, StringFormat='{}{0:C2}'}" FontWeight="Bold" Foreground="#0F172A" FontSize="12"/>
+                                        </StackPanel>
+
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <TextBlock Text="État : " FontSize="11" Foreground="#64748B" VerticalAlignment="Center"/>
+                                            <CheckBox IsChecked="{Binding IsAvailable}" VerticalAlignment="Center" Content="Disponible" FontSize="11"/>
+                                        </StackPanel>
+                                    </DockPanel>
+                                </Border>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border Grid.Row="2" Background="White" BorderBrush="#CBD5E1" BorderThickness="1" CornerRadius="10" Padding="15,10" Margin="0,10,0,0">
+            <DockPanel HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="🛒 " FontSize="20" VerticalAlignment="Center"/>
+                    <TextBlock Text="PRIX : " FontWeight="Bold" FontSize="16" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                    <TextBlock Text="{Binding TotalBasketPrice, StringFormat='{}{0:C2}'}" FontWeight="Bold" FontSize="18" Foreground="#27AE60" VerticalAlignment="Center"/>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+    </Grid>
+</UserControl>
