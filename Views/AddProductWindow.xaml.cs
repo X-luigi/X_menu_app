@@ -5,13 +5,58 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using X_menu_app.Models;
 
 namespace X_menu_app.Views
 {
     public partial class AddProductWindow : Window
     {
+        // Allow prefill when editing
+        public void Prefill(Product product)
+        {
+            if (product == null) return;
+            NameBox.Text = product.Name;
+            QuantityBox.Text = product.Quantity;
+            PriceBox.Text = product.Price.ToString(CultureInfo.CurrentCulture);
+            AvailableBox.IsChecked = product.IsAvailable;
+            if (!string.IsNullOrWhiteSpace(product.OriginalImagePath) && File.Exists(product.OriginalImagePath))
+            {
+                ProductImagePath = product.OriginalImagePath;
+                ImagePathText.Text = ProductImagePath;
+                try
+                {
+                    var bmp = new BitmapImage(new Uri(ProductImagePath));
+                    PreviewImage.Source = bmp;
+                    WithPhotoRadio.IsChecked = true;
+                }
+                catch { PreviewImage.Source = null; }
+            }
+        }
+
+        // Helper to prefill with individual values (used if caller provides raw fields)
+        public void Prefill(string name, string quantity, decimal price, bool isAvailable, string? originalImagePath, string? thumbPath)
+        {
+            NameBox.Text = name;
+            QuantityBox.Text = quantity;
+            PriceBox.Text = price.ToString(CultureInfo.CurrentCulture);
+            AvailableBox.IsChecked = isAvailable;
+            if (!string.IsNullOrWhiteSpace(thumbPath) && File.Exists(thumbPath))
+            {
+                ProductImagePath = thumbPath;
+                ImagePathText.Text = thumbPath;
+                try { PreviewImage.Source = new BitmapImage(new Uri(thumbPath)); WithPhotoRadio.IsChecked = true; }
+                catch { PreviewImage.Source = null; }
+            }
+            else if (!string.IsNullOrWhiteSpace(originalImagePath) && File.Exists(originalImagePath))
+            {
+                ProductImagePath = originalImagePath;
+                ImagePathText.Text = originalImagePath;
+                try { PreviewImage.Source = new BitmapImage(new Uri(originalImagePath)); WithPhotoRadio.IsChecked = true; }
+                catch { PreviewImage.Source = null; }
+            }
+        }
         public string? ProductName { get; private set; }
-        public int ProductQuantity { get; private set; } = 1;
+        public string ProductQuantity { get; private set; } = string.Empty;
         public decimal ProductPrice { get; private set; } = 0.0m;
         public bool ProductIsAvailable { get; private set; } = true;
         public string? ProductImagePath { get; private set; }
@@ -71,12 +116,13 @@ namespace X_menu_app.Views
 
             ProductName = NameBox.Text?.Trim();
 
-            if (!int.TryParse(QuantityBox.Text, out var qty) || qty < 0)
+            // accept any textual quantity (e.g. "1 litre", "13 kilogramme"), only ensure not empty
+            var qtyText = QuantityBox.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(qtyText))
             {
-                MessageBox.Show("Veuillez entrer une quantité valide.", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Veuillez entrer une quantité (ex. '1 litre').", "Erreur", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-
             if (!decimal.TryParse(PriceBox.Text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out var price))
             {
                 // Try with current culture
@@ -87,7 +133,7 @@ namespace X_menu_app.Views
                 }
             }
 
-            ProductQuantity = qty;
+            ProductQuantity = qtyText!;
             ProductPrice = price;
             ProductIsAvailable = AvailableBox?.IsChecked == true;
 

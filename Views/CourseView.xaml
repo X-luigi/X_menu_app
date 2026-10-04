@@ -29,14 +29,22 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Bouton Trier -->
-            <Button Grid.Column="0" Content="Trier" Command="{Binding SortCommand}"
-                    Margin="0,0,10,0" Padding="15,8" Background="#FFFFFF" BorderBrush="#CCCCCC" FontWeight="SemiBold"/>
+            <!-- Menu Trier -->
+            <ComboBox Grid.Column="0" SelectedValuePath="Tag" SelectedValue="{Binding SelectedSortMode, Mode=TwoWay}" Width="220" Margin="0,0,10,0">
+                <ComboBoxItem Content="Nom (A-Z)" Tag="name_asc" />
+                <ComboBoxItem Content="Prix (Croissant)" Tag="price_asc" />
+                <ComboBoxItem Content="Prix (Décroissant)" Tag="price_desc" />
+                <ComboBoxItem Content="Etat : Disponible d'abord" Tag="available" />
+                <ComboBoxItem Content="Etat : Non-disponible d'abord" Tag="unavailable" />
+            </ComboBox>
+            <!-- Affiche l'option active (masquée) -->
+            <!-- TextBlock de label de tri supprimé / masqué par demande utilisateur -->
 
-            <!-- Bouton Tout sélectionner -->
-            <Button Grid.Column="1" Content="Tout sélectionner" Command="{Binding ToggleSelectAllCommand}"
+            <!-- Bouton Tout De/sélectionner (toggle) -->
+            <Button Grid.Column="1" Content="{Binding ToggleSelectAllLabel}" Command="{Binding ToggleSelectAllCommand}"
                     Margin="0,0,15,0" Padding="15,8" Background="#FFFFFF" BorderBrush="#CCCCCC" FontWeight="SemiBold"/>
 
             <!-- Barre de Recherche -->
@@ -52,8 +60,18 @@
                 </Grid>
             </Border>
 
+            <!-- Bouton Modifier -->
+            <Button Grid.Column="3" Content="Modifier" Command="{Binding EditSelectedCommand}" IsEnabled="{Binding CanEdit}"
+                    Background="#F1C40F" Foreground="White" FontWeight="Bold" Padding="14,8" Margin="0,0,10,0" BorderThickness="0">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="6"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
+
             <!-- Bouton Ajouter -->
-            <Button Grid.Column="3" Content="+ Ajouter" Command="{Binding AddProductCommand}"
+            <Button Grid.Column="4" Content="+ Ajouter" Command="{Binding AddProductCommand}"
                     Background="#2ECC71" Foreground="White" FontWeight="Bold" Padding="18,8" Margin="0,0,10,0" BorderThickness="0">
                 <Button.Resources>
                     <Style TargetType="Border">
@@ -63,7 +81,7 @@
             </Button>
 
             <!-- Bouton Supprimer -->
-            <Button Grid.Column="4" Content="- Supprimer" Command="{Binding DeleteSelectedCommand}"
+            <Button Grid.Column="5" Content="- Supprimer" Command="{Binding DeleteSelectedCommand}"
                     Background="#E74C3C" Foreground="White" FontWeight="Bold" Padding="18,8" BorderThickness="0">
                 <Button.Resources>
                     <Style TargetType="Border">
@@ -120,7 +138,7 @@
                                     <!-- Nom et Quantité -->
                                     <StackPanel Grid.Column="2" VerticalAlignment="Top">
                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="15" TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding Quantity, StringFormat='qte : x {0}'}" Foreground="#555555" Margin="0,6,0,0"/>
+                                        <TextBlock Text="{Binding Quantity, StringFormat='Quantité : {0}'}" Foreground="#555555" Margin="0,6,0,0"/>
                                     </StackPanel>
                                 </Grid>
 
@@ -138,8 +156,22 @@
 
                                     <!-- État de disponibilité -->
                                     <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                                        <TextBlock Text="Etat : " FontSize="11" VerticalAlignment="Center"/>
-                                        <CheckBox IsChecked="{Binding IsAvailable}" VerticalAlignment="Center"/>
+                                        <TextBlock Text="Etat : " FontSize="11" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                        <CheckBox IsChecked="{Binding IsAvailable}" VerticalAlignment="Center">
+                                            <CheckBox.Style>
+                                                <Style TargetType="CheckBox">
+                                                    <Setter Property="Content" Value="✔" />
+                                                    <Setter Property="Foreground" Value="Green" />
+                                                    <Setter Property="FontSize" Value="14" />
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsChecked" Value="False">
+                                                            <Setter Property="Content" Value="✖" />
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </CheckBox.Style>
+                                        </CheckBox>
                                     </StackPanel>
                                 </Grid>
                             </Grid>
@@ -154,6 +186,9 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="🛒 " FontSize="18" VerticalAlignment="Center"/>
                 <TextBlock Text="PRIX : " FontWeight="Bold" FontSize="16" VerticalAlignment="Center"/>
+                <!-- Save indicator -->
+                <TextBlock Text="{Binding SaveStatus}" Foreground="#27AE60" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="0,0,12,0" />
+
                 <TextBlock Text="{Binding TotalPrice, StringFormat='{}{0:N2} €'}" Foreground="#2ECC71" FontWeight="Bold" FontSize="18" VerticalAlignment="Center"/>
             </StackPanel>
         </Border>

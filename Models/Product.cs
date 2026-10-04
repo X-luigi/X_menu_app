@@ -6,7 +6,7 @@ namespace X_menu_app.Models
     public class Product : INotifyPropertyChanged
     {
         private string _name = string.Empty;
-        private int _quantity;
+        private string _quantity = string.Empty;
         private decimal _price;
         private bool _isAvailable = true;
         private bool _isSelected;
@@ -18,7 +18,7 @@ namespace X_menu_app.Models
             set { _name = value; OnPropertyChanged(); }
         }
 
-        public int Quantity
+        public string Quantity
         {
             get => _quantity;
             set { _quantity = value; OnPropertyChanged(); }

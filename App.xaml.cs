@@ -17,6 +17,12 @@ namespace X_menu_app
             CultureInfo.DefaultThreadCurrentCulture = fr;
             CultureInfo.DefaultThreadCurrentUICulture = fr;
 
+            // Ensure WPF bindings use the culture for formatting
+            System.Windows.FrameworkElement.LanguageProperty.OverrideMetadata(
+                typeof(System.Windows.FrameworkElement),
+                new System.Windows.FrameworkPropertyMetadata(
+                    System.Windows.Markup.XmlLanguage.GetLanguage(fr.IetfLanguageTag)));
+
             base.OnStartup(e);
         }
     }

@@ -21,10 +21,10 @@ namespace X_menu_app.ViewModels
 
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>
         {
-            new Product { Name = "Pâtes Spaghetti", Quantity = 500, Price = 1.20m, IsAvailable = true },
-            new Product { Name = "Lardons", Quantity = 200, Price = 2.50m, IsAvailable = true },
-            new Product { Name = "Œufs", Quantity = 6, Price = 2.10m, IsAvailable = true },
-            new Product { Name = "Parmesan", Quantity = 100, Price = 2.80m, IsAvailable = true }
+            new Product { Name = "Pâtes Spaghetti", Quantity = "500", Price = 1.20m, IsAvailable = true },
+            new Product { Name = "Lardons", Quantity = "200", Price = 2.50m, IsAvailable = true },
+            new Product { Name = "Œufs", Quantity = "6", Price = 2.10m, IsAvailable = true },
+            new Product { Name = "Parmesan", Quantity = "100", Price = 2.80m, IsAvailable = true }
         };
 
         public decimal TotalBasketPrice => 8.60m;
