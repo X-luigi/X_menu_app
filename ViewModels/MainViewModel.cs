@@ -3,27 +3,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using X_menu_app.Models;
 
 namespace X_menu_app.ViewModels
 {
-    public class Product
-    {
-        public string Name { get; set; } = "";
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public bool IsSelected { get; set; }
-        public bool IsAvailable { get; set; }
-    }
-
-    public class RelayCommand : ICommand
-    {
-        private readonly Action _execute;
-        public RelayCommand(Action execute) => _execute = execute;
-        public bool CanExecute(object? parameter) => true;
-        public void Execute(object? parameter) => _execute();
-        public event EventHandler? CanExecuteChanged;
-    }
-
     public class MainViewModel : INotifyPropertyChanged
     {
         private string _currentView = "Home";
