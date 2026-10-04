@@ -11,7 +11,7 @@
         <vm:CourseViewModel />
     </UserControl.DataContext>
 
-    <Grid Background="#F4F6F9" Margin="10">
+    <Grid Background="{DynamicResource AppBackgroundBrush}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <!-- Barre d'outils haut -->
@@ -62,7 +62,7 @@
 
             <!-- Bouton Modifier -->
             <Button Grid.Column="3" Content="Modifier" Command="{Binding EditSelectedCommand}" IsEnabled="{Binding CanEdit}"
-                    Background="#F1C40F" Foreground="White" FontWeight="Bold" Padding="14,8" Margin="0,0,10,0" BorderThickness="0">
+                    Background="#F1C40F" Foreground="{DynamicResource ModifierButtonForeground}" FontWeight="Bold" Padding="14,8" Margin="0,0,10,0" BorderThickness="0">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="6"/>

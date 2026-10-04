@@ -4,6 +4,11 @@
              xmlns:local="clr-namespace:X_menu_app"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <!-- Theme placeholder: merged at runtime -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Themes/LightTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

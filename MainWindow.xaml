@@ -3,8 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:views="clr-namespace:X_menu_app.Views"
         Title="X_MENU_APP" Height="650" Width="950"
-        WindowStartupLocation="CenterScreen" Background="#F4F6F9"
-        FontFamily="Segoe UI">
+        WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBackgroundBrush}"
+        FontFamily="Segoe UI"
+        ResizeMode="NoResize"
+        WindowState="Normal">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -33,25 +35,27 @@
             </ContentControl.Style>
         </ContentControl>
 
-        <Border Grid.Row="1" Background="White" BorderBrush="#E2E8F0" BorderThickness="0,1,0,0" Padding="10">
+        <Border Grid.Row="1" Background="{DynamicResource FooterBackgroundBrush}" BorderBrush="{DynamicResource SecondaryTextBrush}" BorderThickness="0,1,0,0" Padding="10">
             <Grid Width="350">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="2*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-
                 <Button Grid.Column="0" Command="{Binding NavigateToHomeCommand}" Background="Transparent" BorderThickness="0" Height="35">
-                    <TextBlock Text="🏠" FontSize="20"/>
+                    <TextBlock Text="🏠" FontSize="20" Foreground="{DynamicResource PrimaryTextBrush}"/>
                 </Button>
 
-                <Border Grid.Column="1" Background="#F1F5F9" CornerRadius="8" Padding="15,5" HorizontalAlignment="Center">
-                    <TextBlock Text="X_MENU_APP" FontWeight="Bold" Foreground="#334155" VerticalAlignment="Center"/>
+                <Border Grid.Column="1" Background="{DynamicResource CardBackgroundBrush}" CornerRadius="8" Padding="15,5" HorizontalAlignment="Center">
+                    <TextBlock Text="X_MENU_APP" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center"/>
                 </Border>
 
-                <Button Grid.Column="2" Background="Transparent" BorderThickness="0" Height="35">
-                    <TextBlock Text="👤" FontSize="20"/>
-                </Button>
+                <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <ToggleButton x:Name="ThemeToggle" Width="60" Height="30" Margin="0,0,6,0" Checked="ThemeToggle_Checked" Unchecked="ThemeToggle_Unchecked">🌙</ToggleButton>
+                    <Button Background="Transparent" BorderThickness="0" Height="35">
+                        <TextBlock Text="👤" FontSize="20" Foreground="{DynamicResource PrimaryTextBrush}"/>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
     </Grid>
