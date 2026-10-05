@@ -62,6 +62,13 @@ namespace X_menu_app.Views
                 SortPopup.PlacementTarget = SortMenuButton;
             }
         }
+
+
+
+        private void TransactionsList_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Code à exécuter au chargement de la liste (peut rester vide)
+        }
     }
 }
 

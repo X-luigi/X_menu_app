@@ -12,7 +12,7 @@
         <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="0,0,20,0">
             <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                 <TextBlock Text="BONJOUR " FontSize="28" FontWeight="Bold" Foreground="#2C3E50"/>
-                <TextBlock Text="{Binding UserName}" FontSize="28" FontWeight="Bold" Foreground="#3498DB"/>
+                <TextBlock Text="" FontSize="28" FontWeight="Bold" Foreground="#3498DB"/>
                 <TextBlock Text=" 😊" FontSize="28"/>
             </StackPanel>
 
