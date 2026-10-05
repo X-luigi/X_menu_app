@@ -3,8 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:converters="clr-namespace:X_menu_app.Converters"
     mc:Ignorable="d"
     d:DesignHeight="600" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:AmountToColorConverter x:Key="AmountToColorConverter" />
+    </UserControl.Resources>
     <Grid Background="{DynamicResource AppBackgroundBrush}" Margin="16">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*" />
@@ -59,7 +63,7 @@
                 </Border>
 
                 <!-- ListBox with native scrollbar for transactions -->
-                <ListBox ItemsSource="{Binding Transactions}" SelectedItem="{Binding Selected}" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox x:Name="TransactionsList" ItemsSource="{Binding Transactions}" SelectedItem="{Binding Selected}" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Loaded="TransactionsList_Loaded">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
@@ -77,7 +81,7 @@
                     </ListBox.ItemContainerStyle>
                     <ListBox.ItemTemplate>
                         <DataTemplate>
-                            <Border CornerRadius="6" Margin="0,6,0,6" Padding="8" Background="#FFFFFF" BorderBrush="#D8DCE0" BorderThickness="1">
+                            <Border CornerRadius="6" Margin="0,6,0,6" Padding="8" Background="#FFFFFF" BorderBrush="#D8DCE0" BorderThickness="2">
                                 <Border.Effect>
                                     <DropShadowEffect Color="#000000" Opacity="0.06" BlurRadius="6" />
                                 </Border.Effect>
@@ -88,9 +92,12 @@
                                         <ColumnDefinition Width="140" />
                                     </Grid.ColumnDefinitions>
                                     <CheckBox IsChecked="{Binding IsSelected}" HorizontalAlignment="Center" VerticalAlignment="Center" />
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="8,0,0,0">
-                                        <TextBlock Text="{Binding Amount, StringFormat=C}" FontWeight="Bold" Margin="0,0,12,0" />
-                                        <TextBlock Text="{Binding Label}" VerticalAlignment="Center" />
+                                    <StackPanel Grid.Column="1" Orientation="Vertical" VerticalAlignment="Center" Margin="8,0,0,0">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock FontWeight="Bold" Foreground="{Binding IsExpense, Converter={StaticResource AmountToColorConverter}}" Text="{Binding Amount, StringFormat=C2}" />
+                                            <TextBlock FontWeight="Bold" Foreground="{Binding IsExpense, Converter={StaticResource AmountToColorConverter}}" Text=" EUR" Margin="4,0,0,0" />
+                                        </StackPanel>
+                                        <TextBlock Text="{Binding Label}" FontSize="14" />
                                     </StackPanel>
                                     <TextBlock Grid.Column="2" Text="{Binding Date, StringFormat=d}" VerticalAlignment="Center" HorizontalAlignment="Right" />
                                 </Grid>
@@ -106,38 +113,112 @@
 
         <!-- Right: Solde + Calculator -->
         <StackPanel Grid.Column="2" Margin="16,0,0,0">
-            <Border Style="{StaticResource CardBorder}" Background="#E8F6E8">
+            <!-- Balance Card -->
+            <Border Style="{StaticResource CardBorder}" Background="#E8F6E8" Padding="16" CornerRadius="8">
                 <StackPanel>
-                    <TextBlock Text="Solde courant" FontWeight="SemiBold" />
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="Solde courant" FontWeight="SemiBold" Grid.Column="0" />
+                        <TextBlock Text="🏦" FontSize="20" Grid.Column="1" />
+                    </Grid>
                     <TextBlock Text="{Binding Balance, StringFormat=C}" FontSize="36" FontWeight="Bold" Foreground="#0B63A7" HorizontalAlignment="Center" />
-                    <TextBlock Text="{Binding Today, StringFormat=d}" HorizontalAlignment="Center" />
+                    <TextBlock Text="{Binding Today, StringFormat='d MMMM yyyy'}" HorizontalAlignment="Center" Foreground="#666" Margin="0,8,0,0" />
                 </StackPanel>
             </Border>
 
-            <!-- Calculator area placeholder -->
+            <!-- Separator -->
+            <Separator Margin="0,16,0,16" />
+
+            <!-- Calculator area -->
             <Border Style="{StaticResource CardBorder}" Margin="0,16,0,0">
                 <StackPanel>
-                    <TextBlock Text="Calculatrice" FontWeight="SemiBold" />
-                    <TextBlock Text="{Binding Calculator.Display}" FontSize="20" FontWeight="Bold" HorizontalAlignment="Right" />
-                    <!-- Simple keypad -->
-                    <UniformGrid Columns="4" Margin="0,8,0,0">
-                        <Button Content="7" Command="{Binding Calculator.DigitCommand}" CommandParameter="7" />
-                        <Button Content="8" Command="{Binding Calculator.DigitCommand}" CommandParameter="8" />
-                        <Button Content="9" Command="{Binding Calculator.DigitCommand}" CommandParameter="9" />
-                        <Button Content="/" Command="{Binding Calculator.OpCommand}" CommandParameter="/" />
-                        <Button Content="4" Command="{Binding Calculator.DigitCommand}" CommandParameter="4" />
-                        <Button Content="5" Command="{Binding Calculator.DigitCommand}" CommandParameter="5" />
-                        <Button Content="6" Command="{Binding Calculator.DigitCommand}" CommandParameter="6" />
-                        <Button Content="*" Command="{Binding Calculator.OpCommand}" CommandParameter="*" />
-                        <Button Content="1" Command="{Binding Calculator.DigitCommand}" CommandParameter="1" />
-                        <Button Content="2" Command="{Binding Calculator.DigitCommand}" CommandParameter="2" />
-                        <Button Content="3" Command="{Binding Calculator.DigitCommand}" CommandParameter="3" />
-                        <Button Content="-" Command="{Binding Calculator.OpCommand}" CommandParameter="-" />
-                        <Button Content="0" Command="{Binding Calculator.DigitCommand}" CommandParameter="0" />
-                        <Button Content="," Command="{Binding Calculator.DigitCommand}" CommandParameter="," />
-                        <Button Content="=" Command="{Binding Calculator.EqualCommand}" />
-                        <Button Content="+" Command="{Binding Calculator.OpCommand}" CommandParameter="+" />
-                    </UniformGrid>
+                    <TextBlock Text="🧮 Calculatrice 3-en-1" FontWeight="SemiBold" Margin="0,0,0,12" />
+
+                    <!-- Mode Selection -->
+                    <Grid Margin="0,0,0,12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Button Content="Calcul" Command="{Binding Calculator.SwitchModeCommand}" CommandParameter="calc" Grid.Column="0" Padding="6,4" Margin="0,0,4,0" Background="#E8F0F8" FontSize="11" />
+                        <Button Content="Devise" Command="{Binding Calculator.SwitchModeCommand}" CommandParameter="currency" Grid.Column="1" Padding="6,4" Margin="2,0" Background="#E8F0F8" FontSize="11" />
+                        <Button Content="Dates" Command="{Binding Calculator.SwitchModeCommand}" CommandParameter="date" Grid.Column="2" Padding="6,4" Margin="4,0,0,0" Background="#E8F0F8" FontSize="11" />
+                    </Grid>
+
+                    <!-- Calculator Mode (default) -->
+                    <StackPanel x:Name="CalcModePanel" Visibility="Visible">
+                        <TextBlock Text="Résultat:" FontSize="11" Foreground="#666" />
+                        <Border Background="#F5F5F5" Padding="8" CornerRadius="4" Margin="0,0,0,8">
+                            <TextBlock Text="{Binding Calculator.Display}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Right" />
+                        </Border>
+                        <UniformGrid Columns="4" Margin="0,0,0,8">
+                            <Button Content="7" Command="{Binding Calculator.DigitCommand}" CommandParameter="7" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="8" Command="{Binding Calculator.DigitCommand}" CommandParameter="8" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="9" Command="{Binding Calculator.DigitCommand}" CommandParameter="9" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="÷" Command="{Binding Calculator.OpCommand}" CommandParameter="/" Padding="6" Margin="1" Background="#FFE6CC" FontSize="11" />
+                            <Button Content="4" Command="{Binding Calculator.DigitCommand}" CommandParameter="4" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="5" Command="{Binding Calculator.DigitCommand}" CommandParameter="5" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="6" Command="{Binding Calculator.DigitCommand}" CommandParameter="6" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="×" Command="{Binding Calculator.OpCommand}" CommandParameter="*" Padding="6" Margin="1" Background="#FFE6CC" FontSize="11" />
+                            <Button Content="1" Command="{Binding Calculator.DigitCommand}" CommandParameter="1" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="2" Command="{Binding Calculator.DigitCommand}" CommandParameter="2" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="3" Command="{Binding Calculator.DigitCommand}" CommandParameter="3" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="−" Command="{Binding Calculator.OpCommand}" CommandParameter="-" Padding="6" Margin="1" Background="#FFE6CC" FontSize="11" />
+                            <Button Content="0" Command="{Binding Calculator.DigitCommand}" CommandParameter="0" Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="." Command="{Binding Calculator.DigitCommand}" CommandParameter="." Padding="6" Margin="1" FontSize="11" />
+                            <Button Content="=" Command="{Binding Calculator.EqualCommand}" Padding="6" Margin="1" Background="#DFF0D8" FontWeight="Bold" FontSize="11" />
+                            <Button Content="+" Command="{Binding Calculator.OpCommand}" CommandParameter="+" Padding="6" Margin="1" Background="#FFE6CC" FontSize="11" />
+                        </UniformGrid>
+                        <Button Content="C" Command="{Binding Calculator.ClearCommand}" Padding="6,4" Background="#F2DEDE" HorizontalAlignment="Stretch" FontSize="11" />
+                    </StackPanel>
+
+                    <!-- Currency Mode (hidden by default) -->
+                    <StackPanel x:Name="CurrencyModePanel" Visibility="Collapsed">
+                        <TextBlock Text="Montant:" FontSize="11" Foreground="#666" />
+                        <TextBox Text="{Binding Calculator.Display, UpdateSourceTrigger=PropertyChanged}" Padding="6" Margin="0,0,0,8" FontSize="12" />
+
+                        <Grid Margin="0,0,0,8">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ComboBox SelectedItem="{Binding Calculator.CurrencyFrom}" Grid.Column="0" Padding="4" FontSize="11">
+                                <ComboBoxItem>EUR €</ComboBoxItem>
+                                <ComboBoxItem>USD $</ComboBoxItem>
+                                <ComboBoxItem>FCFA ₣</ComboBoxItem>
+                            </ComboBox>
+                            <TextBlock Text="→" Grid.Column="1" VerticalAlignment="Center" Margin="8,0" FontSize="14" />
+                            <ComboBox SelectedItem="{Binding Calculator.CurrencyTo}" Grid.Column="2" Padding="4" FontSize="11">
+                                <ComboBoxItem>EUR €</ComboBoxItem>
+                                <ComboBoxItem>USD $</ComboBoxItem>
+                                <ComboBoxItem>FCFA ₣</ComboBoxItem>
+                            </ComboBox>
+                        </Grid>
+
+                        <Button Content="Convertir" Command="{Binding Calculator.ConvertCurrencyCommand}" Padding="6,4" Background="#E8F0F8" HorizontalAlignment="Stretch" FontSize="11" />
+                        <Border Background="#F5F5F5" Padding="8" CornerRadius="4" Margin="0,8,0,0">
+                            <TextBlock Text="{Binding Calculator.Display}" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
+
+                    <!-- Date Mode (hidden by default) -->
+                    <StackPanel x:Name="DateModePanel" Visibility="Collapsed">
+                        <TextBlock Text="De:" FontSize="11" Foreground="#666" />
+                        <DatePicker SelectedDate="{Binding Calculator.DateFrom}" Padding="4" Margin="0,0,0,8" FontSize="11" />
+
+                        <TextBlock Text="À:" FontSize="11" Foreground="#666" />
+                        <DatePicker SelectedDate="{Binding Calculator.DateTo}" Padding="4" Margin="0,0,0,8" FontSize="11" />
+
+                        <Button Content="Calculer" Command="{Binding Calculator.CalculateDateDiffCommand}" Padding="6,4" Background="#E8F0F8" HorizontalAlignment="Stretch" FontSize="11" />
+                        <Border Background="#F5F5F5" Padding="8" CornerRadius="4" Margin="0,8,0,0">
+                            <TextBlock Text="{Binding Calculator.Display, StringFormat='Différence: {0} jour(s)'}" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center" />
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
             </Border>
         </StackPanel>

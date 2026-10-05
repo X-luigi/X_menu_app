@@ -185,8 +185,30 @@ namespace X_menu_app.ViewModels
 
         private void Edit()
         {
-            // allow editing only when exactly one item is selected
-            var toEdit = Transactions.FirstOrDefault(t => t.IsSelected) ?? Selected;
+            // allow editing only when exactly one item is selected via checkbox
+            int selectedCount = Transactions.Count(t => t.IsSelected);
+
+            if (selectedCount == 0)
+            {
+                System.Windows.MessageBox.Show(
+                    "⚠️ Veuillez sélectionner une transaction à modifier",
+                    "Aucune sélection",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Information);
+                return;
+            }
+
+            if (selectedCount > 1)
+            {
+                System.Windows.MessageBox.Show(
+                    "⚠️ Une seule transaction à la fois peut être modifiée.\nVeuillez désélectionner les autres transactions.",
+                    "Plusieurs sélections",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+
+            var toEdit = Transactions.FirstOrDefault(t => t.IsSelected);
             if (toEdit == null) return;
 
             // clone values to temp object, apply if OK
@@ -236,7 +258,7 @@ namespace X_menu_app.ViewModels
             OnPropertyChanged(nameof(CanEdit));
         }
 
-        public bool CanEdit => Transactions.Count(t => t.IsSelected) == 1 || Selected != null;
+        public bool CanEdit => Transactions.Count(t => t.IsSelected) == 1;
 
         private void RecalculateBalance()
         {
