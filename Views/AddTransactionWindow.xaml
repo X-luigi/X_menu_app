@@ -1,0 +1,39 @@
+<Window x:Class="X_menu_app.Views.AddTransactionWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:conv="clr-namespace:X_menu_app.Converters"
+    Title="Ajouter / Éditer une transaction" Height="320" Width="400" WindowStartupLocation="CenterOwner" ResizeMode="NoResize">
+    <Window.Resources>
+        <conv:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </Window.Resources>
+    <Grid Margin="12" Background="{DynamicResource AppBackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <Label Content="Date" />
+            <DatePicker SelectedDate="{Binding Transaction.Date}" />
+
+            <Label Content="Libellé" Margin="0,8,0,0" />
+            <TextBox Text="{Binding Transaction.Label}" />
+
+            <Label Content="Catégorie" Margin="0,8,0,0" />
+            <TextBox Text="{Binding Transaction.Category}" />
+
+            <Label Content="Montant" Margin="0,8,0,0" />
+            <StackPanel Orientation="Horizontal">
+                <RadioButton Content="+" IsChecked="{Binding Transaction.IsExpense, Converter={StaticResource InverseBoolConverter}}" GroupName="Sign" Margin="0,0,8,0" />
+                <RadioButton Content="-" IsChecked="{Binding Transaction.IsExpense}" GroupName="Sign" />
+                <TextBox Text="{Binding Transaction.Amount, UpdateSourceTrigger=PropertyChanged}" Width="180" Margin="8,0,0,0" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Right" Margin="0,8,0,0">
+            <Button Content="OK" Width="80" Margin="8,0,0,0" Click="Ok_Click" />
+            <Button Content="Annuler" Width="80" Margin="8,0,0,0" Click="Cancel_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

@@ -14,7 +14,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <ContentControl Grid.Row="0">
+        <ContentControl Grid.Row="0" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
             <ContentControl.Style>
                 <Style TargetType="ContentControl">
                     <Setter Property="Content">
@@ -27,6 +27,13 @@
                             <Setter Property="Content">
                                 <Setter.Value>
                                     <views:CourseView/>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentView}" Value="Wallet">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <views:WalletView/>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>

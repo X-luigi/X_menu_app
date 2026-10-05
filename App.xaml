@@ -7,7 +7,9 @@
         <!-- Theme placeholder: merged at runtime -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Themes/LightTheme.xaml" />
+                <ResourceDictionary Source="Themes/LightTheme.xaml" />
+                <!-- Application styles for views -->
+                <ResourceDictionary Source="Views/SolutionStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

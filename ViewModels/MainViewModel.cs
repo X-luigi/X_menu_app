@@ -31,12 +31,14 @@ namespace X_menu_app.ViewModels
 
         public ICommand NavigateToHomeCommand { get; }
         public ICommand NavigateToCourseCommand { get; }
+        public ICommand NavigateToWalletCommand { get; }
         public ICommand ExitCommand { get; }
 
         public MainViewModel()
         {
             NavigateToHomeCommand = new RelayCommand(() => CurrentView = "Home");
             NavigateToCourseCommand = new RelayCommand(() => CurrentView = "Course");
+            NavigateToWalletCommand = new RelayCommand(() => CurrentView = "Wallet");
             ExitCommand = new RelayCommand(() => System.Windows.Application.Current.Shutdown());
         }
 

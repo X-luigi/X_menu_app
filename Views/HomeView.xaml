@@ -34,7 +34,7 @@
 
         <StackPanel Grid.Column="2" VerticalAlignment="Center" Margin="20,0,0,0">
             <Border CornerRadius="10" BorderBrush="#CBD5E1" BorderThickness="2" Margin="0,0,0,15">
-                <Button Height="55" Background="White" BorderThickness="0">
+                <Button Command="{Binding NavigateToWalletCommand}" Height="55" Background="White" BorderThickness="0">
                     <Grid Width="220">
                         <TextBlock Text="PORTEFEUILLE" FontSize="15" FontWeight="Bold" Foreground="#2C3E50" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                         <TextBlock Text="👛" FontSize="20" HorizontalAlignment="Right" VerticalAlignment="Center"/>
