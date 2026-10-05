@@ -67,7 +67,7 @@ namespace X_menu_app.Views
 
         private void TransactionsList_Loaded(object sender, RoutedEventArgs e)
         {
-            // Code à exécuter au chargement de la liste (peut rester vide)
+            
         }
     }
 }
