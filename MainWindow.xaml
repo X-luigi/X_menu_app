@@ -5,7 +5,8 @@
         Title="X_MENU_APP" Height="650" Width="950"
         WindowStartupLocation="CenterScreen" Background="{DynamicResource AppBackgroundBrush}"
         FontFamily="Segoe UI"
-        ResizeMode="NoResize"
+        ResizeMode="CanResize"
+        MinWidth="900" MinHeight="600"
         WindowState="Normal">
 
     <Grid>

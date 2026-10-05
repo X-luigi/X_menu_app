@@ -14,62 +14,68 @@
 
         <!-- Left: Transactions -->
         <Border Grid.Column="0" Background="#E6EEF6" Padding="12" Margin="0,0,8,0" CornerRadius="6">
-            <StackPanel>
             <DockPanel LastChildFill="True">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Top">
-                    <!-- Combined menu button + sort ComboBox (visually merged) -->
-                    <Border Background="#FFFFFF" CornerRadius="6" BorderBrush="#D8DCE0" BorderThickness="1" VerticalAlignment="Center" Margin="0,0,8,0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="44" />
-                                <ColumnDefinition Width="240" />
-                            </Grid.ColumnDefinitions>
-                            <Button Grid.Column="0" Content="☰" FontSize="16" Background="Transparent" BorderThickness="0" Width="44" Height="36" />
-                            <!-- Trier combo similar to CourseView -->
-                            <ComboBox Grid.Column="1" SelectedValuePath="Tag" SelectedValue="{Binding SelectedSortMode, Mode=TwoWay}" Background="Transparent" BorderThickness="0" Padding="6,0">
-                                <ComboBoxItem Content="Date (Dernières d'abord)" Tag="date_desc" />
-                                <ComboBoxItem Content="Date (Anciennes d'abord)" Tag="date_asc" />
-                                <ComboBoxItem Content="Montant (Croissant)" Tag="amount_asc" />
-                                <ComboBoxItem Content="Montant (Décroissant)" Tag="amount_desc" />
-                                <ComboBoxItem Content="Type : Dépôt d'abord" Tag="deposit_first" />
-                                <ComboBoxItem Content="Type : Retrait d'abord" Tag="expense_first" />
-                            </ComboBox>
-                        </Grid>
+                <!-- Toolbar Row 1: Sort dropdown + Search -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Top" Height="40">
+                    <!-- Sort/Menu button as dropdown showing sort options -->
+                    <Border Background="#FFFFFF" CornerRadius="6" BorderBrush="#D8DCE0" BorderThickness="1" VerticalAlignment="Center" Margin="0,0,8,0" Width="48" Height="36">
+                        <Button Content="☰" FontSize="18" Background="Transparent" BorderThickness="0" x:Name="SortMenuButton" Click="SortMenuButton_Click" />
                     </Border>
+                    <Popup x:Name="SortPopup" Placement="Bottom" IsOpen="False" StaysOpen="False" AllowsTransparency="True" Width="200">
+                        <Border Background="#FFFFFF" BorderBrush="#D8DCE0" BorderThickness="1" CornerRadius="4" Padding="4">
+                            <StackPanel>
+                                <Button Content="Date (Dernières d'abord)" Command="{Binding SetSortCommand}" CommandParameter="date_desc" Margin="2" Padding="8,4" HorizontalAlignment="Stretch" />
+                                <Button Content="Date (Anciennes d'abord)" Command="{Binding SetSortCommand}" CommandParameter="date_asc" Margin="2" Padding="8,4" HorizontalAlignment="Stretch" />
+                                <Button Content="Montant (Croissant)" Command="{Binding SetSortCommand}" CommandParameter="amount_asc" Margin="2" Padding="8,4" HorizontalAlignment="Stretch" />
+                                <Button Content="Montant (Décroissant)" Command="{Binding SetSortCommand}" CommandParameter="amount_desc" Margin="2" Padding="8,4" HorizontalAlignment="Stretch" />
+                                <Button Content="Type : Dépôt d'abord" Command="{Binding SetSortCommand}" CommandParameter="deposit_first" Margin="2" Padding="8,4" HorizontalAlignment="Stretch" />
+                                <Button Content="Type : Retrait d'abord" Command="{Binding SetSortCommand}" CommandParameter="expense_first" Margin="2" Padding="8,4" HorizontalAlignment="Stretch" />
+                            </StackPanel>
+                        </Border>
+                    </Popup>
 
-                    <Button Content="{Binding ToggleSelectAllLabel}" Command="{Binding ToggleSelectAllCommand}" Width="140" Margin="0,0,8,0" Padding="10,6" />
-                    <Border Background="#FFFFFF" CornerRadius="6" Padding="6" BorderBrush="#D8DCE0" BorderThickness="1" VerticalAlignment="Center">
+                    <!-- Search box compact -->
+                    <Border Background="#FFFFFF" CornerRadius="6" Padding="6" BorderBrush="#D8DCE0" BorderThickness="1" VerticalAlignment="Center" Margin="0,0,8,0">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="🔍" Margin="0,0,6,0" VerticalAlignment="Center" />
-                            <TextBox Width="220" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Background="Transparent" />
+                            <TextBox Width="180" Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" Background="Transparent" VerticalAlignment="Center" />
                         </StackPanel>
                     </Border>
-                    <Button Content="Modifier" Command="{Binding EditCommand}" Width="80" Margin="8,0,0,0" Background="#FFF7CC" />
-                    <Button Content="+ Ajouter" Command="{Binding AddCommand}" Width="80" Margin="8,0,0,0" Background="#DFF0D8" />
-                    <Button Content="- Supprimer" Command="{Binding DeleteCommand}" Width="100" Margin="8,0,0,0" Background="#F2DEDE" />
+
+                    <!-- Spacer to push buttons right -->
+                    <Border Background="Transparent" />
+                </StackPanel>
+
+                <!-- Toolbar Row 2: Select All + Action Buttons -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8" VerticalAlignment="Top" Height="36">
+                    <Button Content="{Binding ToggleSelectAllLabel}" Command="{Binding ToggleSelectAllCommand}" Padding="10,6" Margin="0,0,8,0" Background="#E8F0F8" />
+                    <Button Content="✏️ Modifier" Command="{Binding EditCommand}" Padding="10,6" Margin="4,0" Background="#FFF7CC" />
+                    <Button Content="➕ Ajouter" Command="{Binding AddCommand}" Padding="10,6" Margin="4,0" Background="#DFF0D8" />
+                    <Button Content="🗑️ Supprimer" Command="{Binding DeleteCommand}" Padding="10,6" Margin="4,0" Background="#F2DEDE" />
                 </StackPanel>
 
                 <Border Background="#BFD6ED" Padding="8" CornerRadius="4" DockPanel.Dock="Top" Margin="0,4,0,8">
                     <TextBlock Text="Dernières Opérations ..." FontWeight="SemiBold" Foreground="#225175" />
                 </Border>
 
-                <!-- ListView with virtualization to allow efficient scrolling over many transactions -->
-                <ListView ItemsSource="{Binding Transactions}" SelectedItem="{Binding Selected}" Background="Transparent" BorderThickness="0">
-                    <ListView.ItemsPanel>
+                <!-- ListBox with native scrollbar for transactions -->
+                <ListBox ItemsSource="{Binding Transactions}" SelectedItem="{Binding Selected}" Background="Transparent" BorderThickness="0" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
                             <VirtualizingStackPanel />
                         </ItemsPanelTemplate>
-                    </ListView.ItemsPanel>
-                    <ListView.ItemContainerStyle>
-                        <Style TargetType="ListViewItem">
+                    </ListBox.ItemsPanel>
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
                             <Setter Property="Padding" Value="0" />
                             <Setter Property="Margin" Value="0" />
                             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                             <Setter Property="Background" Value="Transparent" />
                             <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
                         </Style>
-                    </ListView.ItemContainerStyle>
-                    <ListView.ItemTemplate>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border CornerRadius="6" Margin="0,6,0,6" Padding="8" Background="#FFFFFF" BorderBrush="#D8DCE0" BorderThickness="1">
                                 <Border.Effect>
@@ -90,10 +96,9 @@
                                 </Grid>
                             </Border>
                         </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </DockPanel>
-            </StackPanel>
         </Border>
 
         <!-- splitter -->

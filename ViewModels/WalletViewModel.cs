@@ -44,6 +44,7 @@ namespace X_menu_app.ViewModels
             ToggleSelectAllCommand = new RelayCommand(_ => ToggleSelectAll(!AllSelected), _ => Transactions.Count > 0);
             ApplyFilterCommand = new RelayCommand(_ => ApplyFilter(), _ => true);
             ApplySortCommand = new RelayCommand(_ => ApplySort(), _ => true);
+            SetSortCommand = new RelayCommand(param => SetSort(param?.ToString()), _ => true);
 
             Calculator = new CalculatorViewModel();
 
@@ -107,6 +108,7 @@ namespace X_menu_app.ViewModels
         public ICommand ToggleSelectAllCommand { get; }
         public ICommand ApplyFilterCommand { get; }
         public ICommand ApplySortCommand { get; }
+        public ICommand SetSortCommand { get; }
         public CalculatorViewModel Calculator { get; }
 
         private bool CanDelete() => Transactions.Any(t => t.IsSelected) || Selected != null;
@@ -138,6 +140,14 @@ namespace X_menu_app.ViewModels
                 Transactions = new ObservableCollection<Transaction>(filtered);
             }
             RecalculateBalance();
+        }
+
+        private void SetSort(string? mode)
+        {
+            if (!string.IsNullOrEmpty(mode))
+            {
+                SelectedSortMode = mode;
+            }
         }
 
         private void ApplySort()
