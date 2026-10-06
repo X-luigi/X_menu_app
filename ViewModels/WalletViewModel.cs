@@ -94,7 +94,7 @@ namespace X_menu_app.ViewModels
         private void Add()
         {
             // Open AddTransactionWindow as modal dialog
-            var t = new Transaction { Date = DateTime.Now, Label = "", Amount = 0m, IsExpense = true, Category = "Divers" };
+            var t = new Transaction { Date = DateTime.Now, Label = "", Amount = 0.0m, IsExpense = true, Category = "Divers" };
             var win = new Views.AddTransactionWindow();
             var vm = new AddTransactionViewModel(t,
                 onOk: () => { Transactions.Insert(0, t); Selected = t; RecalculateBalance(); Save(); },
